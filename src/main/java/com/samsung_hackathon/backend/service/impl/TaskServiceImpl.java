@@ -1,13 +1,12 @@
-package com.samsung_hackaton.backend.service.impl;
+package com.samsung_hackathon.backend.service.impl;
 
-import com.samsung_hackaton.backend.dao.ColumnRepository;
-import com.samsung_hackaton.backend.dao.TaskRepository;
-import com.samsung_hackaton.backend.dao.UserRepository;
-import com.samsung_hackaton.backend.entity.BoardColumn;
-import com.samsung_hackaton.backend.entity.Task;
-import com.samsung_hackaton.backend.entity.User;
-import com.samsung_hackaton.backend.service.TaskService;
-import jakarta.persistence.Column;
+import com.samsung_hackathon.backend.dao.ColumnRepository;
+import com.samsung_hackathon.backend.dao.TaskRepository;
+import com.samsung_hackathon.backend.dao.UserRepository;
+import com.samsung_hackathon.backend.entity.BoardColumn;
+import com.samsung_hackathon.backend.entity.Task;
+import com.samsung_hackathon.backend.entity.User;
+import com.samsung_hackathon.backend.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

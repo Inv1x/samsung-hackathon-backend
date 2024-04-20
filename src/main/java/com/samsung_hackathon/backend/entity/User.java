@@ -1,4 +1,4 @@
-package com.samsung_hackaton.backend.entity;
+package com.samsung_hackathon.backend.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Column;

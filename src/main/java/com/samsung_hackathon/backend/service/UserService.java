@@ -1,7 +1,7 @@
-package com.samsung_hackaton.backend.service;
+package com.samsung_hackathon.backend.service;
 
 
-import com.samsung_hackaton.backend.entity.User;
+import com.samsung_hackathon.backend.entity.User;
 
 import java.util.List;
 

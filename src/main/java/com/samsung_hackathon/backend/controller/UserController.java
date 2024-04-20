@@ -1,8 +1,7 @@
-package com.samsung_hackaton.backend.controller;
+package com.samsung_hackathon.backend.controller;
 
-import com.samsung_hackaton.backend.entity.User;
-import com.samsung_hackaton.backend.service.UserService;
-import jakarta.websocket.server.PathParam;
+import com.samsung_hackathon.backend.entity.User;
+import com.samsung_hackathon.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,6 @@
-package com.samsung_hackaton.backend.dao;
+package com.samsung_hackathon.backend.dao;
 
-import com.samsung_hackaton.backend.entity.Task;
-import com.samsung_hackaton.backend.entity.User;
+import com.samsung_hackathon.backend.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

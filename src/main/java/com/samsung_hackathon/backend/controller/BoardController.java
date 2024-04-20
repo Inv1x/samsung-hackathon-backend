@@ -1,13 +1,11 @@
-package com.samsung_hackaton.backend.controller;
+package com.samsung_hackathon.backend.controller;
 
-import com.samsung_hackaton.backend.entity.Board;
-import com.samsung_hackaton.backend.entity.User;
-import com.samsung_hackaton.backend.service.BoardService;
+import com.samsung_hackathon.backend.entity.Board;
+import com.samsung_hackathon.backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController("board")
 @RequiredArgsConstructor
@@ -41,7 +39,7 @@ public class BoardController {
     }
 
     @PutMapping("{boardId}/add-column/{columnId}")
-    public Board addColumn(@PathVariable long boardId, @PathVariable long columnId) {;
+    public Board addColumn(@PathVariable long boardId, @PathVariable long columnId) {
         return boardService.addColumn(boardId, columnId);
     }
 

@@ -1,4 +1,4 @@
-package com.samsung_hackaton.backend;
+package com.samsung_hackathon.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
