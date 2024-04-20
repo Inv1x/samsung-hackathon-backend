@@ -8,7 +8,6 @@ import com.samsung_hackathon.backend.entity.BoardColumn;
 import com.samsung_hackathon.backend.entity.ColumnTask;
 import com.samsung_hackathon.backend.service.ColumnService;
 import lombok.RequiredArgsConstructor;
-import org.h2.util.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

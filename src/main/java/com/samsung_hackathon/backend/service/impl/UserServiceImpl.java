@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
         newUser.setName(user.getName());
         newUser.setBoards(user.getBoards());
-        newUser.setAssignedTasks(user.getAssignedTasks());
+        newUser.setAssignedColumnTasks(user.getAssignedColumnTasks());
 
         return userRepository.saveAndFlush(newUser);
     }
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        user.getAssignedTasks().add(task);
+        user.getAssignedColumnTasks().add(task);
         task.setAssignedTo(user);
         return userRepository.saveAndFlush(user);
     }

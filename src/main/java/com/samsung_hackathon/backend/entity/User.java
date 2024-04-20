@@ -33,9 +33,9 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Board> boards;
 
-    @Column(name = "assigned_tasks")
+    @Column(name = "assigned_column_tasks")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<ColumnTask> assignedTasks;
+    private Set<ColumnTask> assignedColumnTasks;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Authority> authorities;
