@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController("column")
 @RequiredArgsConstructor
@@ -29,7 +28,7 @@ public class ColumnController {
         return columnService.getColumn(id);
     }
 
-    @PostMapping("by-id/{id}")
+    @PutMapping("by-id/{id}")
     public BoardColumn updateColumn(@PathVariable long id, @RequestBody BoardColumn boardColumn) {
         return columnService.updateColumn(id, boardColumn);
     }
@@ -50,7 +49,7 @@ public class ColumnController {
     }
 
     public BoardColumn linkBoard(long listId, long boardId) {
-        return null;  // ненужный метод
+        return null;  // TODO ненужный метод
     }
 
     @DeleteMapping("{listId}/unlink-board/{boardId}")
