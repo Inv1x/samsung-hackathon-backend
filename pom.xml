@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>samsung-hackaton-backend</artifactId>
+    <artifactId>samsung-hackathon-backend</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -41,6 +41,15 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
 
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
 
