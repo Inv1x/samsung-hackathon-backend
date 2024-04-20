@@ -13,3 +13,5 @@ spring:
         # create-drop for reset
 
       show-sql: false
+
+      defer-datasource-initialization: true

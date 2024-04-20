@@ -1,23 +1,30 @@
 package com.samsung_hackathon.backend.service;
 
 
+import com.samsung_hackathon.backend.controller.dto.UserProfileDto;
+import com.samsung_hackathon.backend.controller.dto.UserRegisterDto;
+import com.samsung_hackathon.backend.entity.Authority;
 import com.samsung_hackathon.backend.entity.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> getAllUsers();
+    List<UserProfileDto> getAllUsers();
 
-    User createUser(User user);
+    UserProfileDto createUser(UserRegisterDto user);
 
-    User getUser(long id);
+    UserProfileDto getUser(long id);
 
-    User updateUser(long id, User user);
+    UserProfileDto getUserByUsername(String username);
+
+    UserProfileDto updateUser(long id, UserProfileDto user);
+
+    void updateAuthority(long id, Authority authority);
 
     void deleteUser(long id);
 
-    User linkBoard(long userId, long boardId);
+    UserProfileDto linkBoard(long userId, long boardId);
 
-    User assignTask(long userId, long taskId);
+    UserProfileDto assignTask(long userId, long taskId);
 }

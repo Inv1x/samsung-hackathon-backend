@@ -13,24 +13,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer {
     private final UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/h2-console/*").permitAll()
-                        .requestMatchers("users/register", "users/username/{username}").permitAll()
-                        .requestMatchers("authority/", "users/authority/").hasRole("ADMIN")
-                        .requestMatchers("users/").hasAnyRole("USER", "ADMIN")
-                        .anyRequest().authenticated()
-                )
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/h2-console/*").permitAll()
+//                        .requestMatchers("users/register", "users/username/{username}").permitAll()
+//                        .requestMatchers("authority/", "users/authority/").hasRole("ADMIN")
+//                        .requestMatchers("users/").hasAnyRole("USER", "ADMIN")
+//                        .anyRequest().authenticated()
+//                )
                 .httpBasic(Customizer.withDefaults());
 
 //        http.headers().frameOptions().sameOrigin();
@@ -38,8 +39,7 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }

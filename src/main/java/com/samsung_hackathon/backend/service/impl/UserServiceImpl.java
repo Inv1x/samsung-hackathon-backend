@@ -1,18 +1,26 @@
 package com.samsung_hackathon.backend.service.impl;
 
+import com.samsung_hackathon.backend.exception.UserAlreadyExistsException;
+import com.samsung_hackathon.backend.controller.dto.UserProfileDto;
+import com.samsung_hackathon.backend.controller.dto.UserRegisterDto;
+import com.samsung_hackathon.backend.dao.AuthorityRepository;
 import com.samsung_hackathon.backend.dao.BoardRepository;
 import com.samsung_hackathon.backend.dao.TaskRepository;
 import com.samsung_hackathon.backend.dao.UserRepository;
+import com.samsung_hackathon.backend.entity.Authority;
 import com.samsung_hackathon.backend.entity.Board;
 import com.samsung_hackathon.backend.entity.ColumnTask;
 import com.samsung_hackathon.backend.entity.User;
+import com.samsung_hackathon.backend.exception.UserNotFoundException;
+import com.samsung_hackathon.backend.mapper.UserMapper;
 import com.samsung_hackathon.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,53 +33,99 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final TaskRepository taskRepository;
 
+    @Autowired
+    private final AuthorityRepository authorityRepository;
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserProfileDto> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::toUserProfileDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public User createUser(User user) {
-        return userRepository.saveAndFlush(user);
+    public UserProfileDto createUser(UserRegisterDto userRegisterDto) {
+        if (userRepository.findByUsername(userRegisterDto.getUsername()).isPresent())
+            throw new UserAlreadyExistsException("User already exists");
+
+//        Optional<Authority> authorityOptional = authorityRepository.findByAuthority("ROLE_USER");
+//        if (authorityOptional.isEmpty()) throw new RuntimeException("Authority not found!");
+
+        User user = UserMapper.toUserEntity(userRegisterDto);
+        user.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
+        Set<Authority> authority = new HashSet<>();
+//        authority.add(authorityOptional.get());
+        user.setAuthorities(authority);
+
+        return UserMapper.toUserProfileDto(userRepository.saveAndFlush((user)));
     }
 
     @Override
-    public User getUser(long id) throws RuntimeException{
-        User user;
+    public UserProfileDto getUser(long id) throws RuntimeException{
+        Optional<User> userOptional = userRepository.findById(id);
 
-        try {
-            user = userRepository.findById(id).get();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("User with ID " + id + " not found!", e);
-        }
+        if (userOptional.isEmpty()) throw new UserNotFoundException("User with ID " + id + " not found");
 
-        return user;
+        return UserMapper.toUserProfileDto(userOptional.get());
     }
 
     @Override
-    public User updateUser(long id, User user) {
-        User newUser;
+    public UserProfileDto getUserByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
 
-        try {
-            newUser = userRepository.findById(id).get();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("User with ID " + id + " not found!", e);
-        }
+        if (userOptional.isEmpty()) throw new UserNotFoundException("User with username " + username + " not found");
 
-        newUser.setName(user.getName());
-        newUser.setBoards(user.getBoards());
-        newUser.setAssignedColumnTasks(user.getAssignedColumnTasks());
+        return UserMapper.toUserProfileDto(userOptional.get());
+    }
 
-        return userRepository.saveAndFlush(newUser);
+    @Override
+    public UserProfileDto updateUser(long id, UserProfileDto userProfileDto) {
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isEmpty()) throw new UserNotFoundException("User with ID " + id + " not found");
+
+        User user = userOptional.get();
+        if (userProfileDto.getName() != null) user.setName(userProfileDto.getName());
+        if (userProfileDto.getUsername() != null) user.setUsername(userProfileDto.getUsername());
+        if (userProfileDto.getEmail() != null) user.setEmail(userProfileDto.getEmail());
+        if (userProfileDto.getBoards() != null) user.setBoards(userProfileDto.getBoards());
+        if (userProfileDto.getAssignedColumnTasks() != null) user.setAssignedColumnTasks(userProfileDto.getAssignedColumnTasks());
+
+        return UserMapper.toUserProfileDto(userRepository.save(user));
+    }
+
+    @Override
+    public void updateAuthority(long id, Authority authority) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) throw new UserNotFoundException("User with ID " + id + " not found");
+
+        Optional<Authority> authorityOptional = authorityRepository.findByAuthority(authority.getAuthority());
+        if (authorityOptional.isEmpty()) throw new RuntimeException("Authority not found!");
+
+        User user = userOptional.get();
+        authority = authorityOptional.get();
+
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(authority);
+        user.setAuthorities(authorities);
+
+        userRepository.save(user);
     }
 
     @Override
     public void deleteUser(long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
+
+        userRepository.delete(user);
     }
 
     @Override
-    public User linkBoard(long userId, long boardId) {
+    public UserProfileDto linkBoard(long userId, long boardId) {
         User user;
         Board board;
 
@@ -89,11 +143,11 @@ public class UserServiceImpl implements UserService {
 
         user.getBoards().add(board);
         board.getCollaborators().add(user);
-        return userRepository.saveAndFlush(user);
+        return UserMapper.toUserProfileDto(userRepository.saveAndFlush(user));
     }
 
     @Override
-    public User assignTask(long userId, long taskId) {
+    public UserProfileDto assignTask(long userId, long taskId) {
         User user;
         ColumnTask task;
 
@@ -111,6 +165,6 @@ public class UserServiceImpl implements UserService {
 
         user.getAssignedColumnTasks().add(task);
         task.setAssignedTo(user);
-        return userRepository.saveAndFlush(user);
+        return UserMapper.toUserProfileDto(userRepository.saveAndFlush(user));
     }
 }
