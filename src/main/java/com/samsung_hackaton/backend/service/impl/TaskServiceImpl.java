@@ -4,10 +4,9 @@ import com.samsung_hackaton.backend.dao.ColumnRepository;
 import com.samsung_hackaton.backend.dao.TaskRepository;
 import com.samsung_hackaton.backend.dao.UserRepository;
 import com.samsung_hackaton.backend.entity.BoardColumn;
-import com.samsung_hackaton.backend.entity.Task;
+import com.samsung_hackaton.backend.entity.ColumnTask;
 import com.samsung_hackaton.backend.entity.User;
 import com.samsung_hackaton.backend.service.TaskService;
-import jakarta.persistence.Column;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,42 +27,37 @@ public class TaskServiceImpl implements TaskService {
     private final ColumnRepository columnRepository;
 
     @Override
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public ColumnTask createTask(ColumnTask columnTask) {
+        return taskRepository.saveAndFlush(columnTask);
     }
 
     @Override
-    public Task createTask(Task task) {
-        return taskRepository.saveAndFlush(task);
-    }
-
-    @Override
-    public Task getTask(long id) {
-        Task task;
+    public ColumnTask getTask(long id) {
+        ColumnTask columnTask;
 
         try {
-            task = taskRepository.findById(id).get();
+            columnTask = taskRepository.findById(id).get();
         } catch (NoSuchElementException e) {
             throw new RuntimeException("Task with ID " + id + " not found!", e);
         }
 
-        return task;
+        return columnTask;
     }
 
     @Override
-    public Task updateTask(long id, Task task) {
-        Task newTask;
+    public ColumnTask updateTask(long id, ColumnTask columnTask) {
+        ColumnTask newColumnTask;
 
         try {
-            newTask = taskRepository.findById(id).get();
+            newColumnTask = taskRepository.findById(id).get();
         } catch (NoSuchElementException e) {
             throw new RuntimeException("Task with ID " + id + " not found!", e);
         }
 
-        newTask.setDescription(task.getDescription());
-        newTask.setAssignedTo(task.getAssignedTo());
+        newColumnTask.setDescription(columnTask.getDescription());
+        newColumnTask.setAssignedTo(columnTask.getAssignedTo());
 
-        return taskRepository.saveAndFlush(newTask);
+        return taskRepository.saveAndFlush(newColumnTask);
     }
 
     @Override
@@ -72,12 +66,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task linkColumn(long taskId, long columnId) {
-        Task task;
+    public ColumnTask linkColumn(long taskId, long columnId) {
+        ColumnTask columnTask;
         BoardColumn column;
 
         try {
-            task = taskRepository.findById(taskId).get();
+            columnTask = taskRepository.findById(taskId).get();
             column = columnRepository.findById(columnId).get();
         } catch (NoSuchElementException e) {
             if (taskRepository.findById(taskId).isEmpty()) {
@@ -88,18 +82,18 @@ public class TaskServiceImpl implements TaskService {
             }
         }
 
-        task.setColumnId(columnId);
+        columnTask.setColumnId(columnId);
 
-        return taskRepository.saveAndFlush(task);
+        return taskRepository.saveAndFlush(columnTask);
     }
 
     @Override
-    public Task unlinkColumn(long taskId, long columnId) {
-        Task task;
+    public ColumnTask unlinkColumn(long taskId, long columnId) {
+        ColumnTask columnTask;
         BoardColumn column;
 
         try {
-            task = taskRepository.findById(taskId).get();
+            columnTask = taskRepository.findById(taskId).get();
             column = columnRepository.findById(columnId).get();
         } catch (NoSuchElementException e) {
             if (taskRepository.findById(taskId).isEmpty()) {
@@ -110,18 +104,18 @@ public class TaskServiceImpl implements TaskService {
             }
         }
 
-        task.setColumnId(0);
+        columnTask.setColumnId(0);
 
-        return taskRepository.saveAndFlush(task);
+        return taskRepository.saveAndFlush(columnTask);
     }
 
     @Override
-    public Task linkUser(long taskId, long userId) {
-        Task task;
+    public ColumnTask linkUser(long taskId, long userId) {
+        ColumnTask columnTask;
         User user;
 
         try {
-            task = taskRepository.findById(taskId).get();
+            columnTask = taskRepository.findById(taskId).get();
             user = userRepository.findById(userId).get();
         } catch (NoSuchElementException e) {
             if (taskRepository.findById(taskId).isEmpty()) {
@@ -132,18 +126,18 @@ public class TaskServiceImpl implements TaskService {
             }
         }
 
-        task.setAssignedTo(user);
+        columnTask.setAssignedTo(user);
 
-        return taskRepository.saveAndFlush(task);
+        return taskRepository.saveAndFlush(columnTask);
     }
 
     @Override
-    public Task unlinkUser(long taskId, long userId) {
-        Task task;
+    public ColumnTask unlinkUser(long taskId, long userId) {
+        ColumnTask columnTask;
         User user;
 
         try {
-            task = taskRepository.findById(taskId).get();
+            columnTask = taskRepository.findById(taskId).get();
             user = userRepository.findById(userId).get();
         } catch (NoSuchElementException e) {
             if (taskRepository.findById(taskId).isEmpty()) {
@@ -154,8 +148,8 @@ public class TaskServiceImpl implements TaskService {
             }
         }
 
-        task.setAssignedTo(null);
+        columnTask.setAssignedTo(null);
 
-        return taskRepository.saveAndFlush(task);
+        return taskRepository.saveAndFlush(columnTask);
     }
 }

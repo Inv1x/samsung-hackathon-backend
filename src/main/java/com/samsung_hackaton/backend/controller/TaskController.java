@@ -1,6 +1,6 @@
 package com.samsung_hackaton.backend.controller;
 
-import com.samsung_hackaton.backend.entity.Task;
+import com.samsung_hackaton.backend.entity.ColumnTask;
 import com.samsung_hackaton.backend.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,24 +14,19 @@ import java.util.List;
 public class TaskController {
     private final TaskService taskService;
 
-    @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
-    }
-
     @PostMapping
-    public Task createTask(Task task) {
-        return taskService.createTask(task);
+    public ColumnTask createTask(ColumnTask columnTask) {
+        return taskService.createTask(columnTask);
     }
 
     @GetMapping("/{id}")
-    public Task getTask(long id) {
+    public ColumnTask getTask(long id) {
         return taskService.getTask(id);
     }
 
     @PutMapping("/{id}")
-    public Task updateTask(long id, Task task) {
-        return taskService.updateTask(id, task);
+    public ColumnTask updateTask(long id, ColumnTask columnTask) {
+        return taskService.updateTask(id, columnTask);
     }
 
     @DeleteMapping("/{id}")
@@ -40,12 +35,12 @@ public class TaskController {
     }
 
     @PutMapping("/{taskId}/link-column/{columnId}")
-    public Task linkColumn(long taskId, long columnId) {
+    public ColumnTask linkColumn(long taskId, long columnId) {
         return taskService.linkColumn(taskId, columnId);
     }
 
     @PutMapping("/{taskId}/unlink-user/{columnId}")
-    public Task unlinkUser(long taskId, long userId) {
+    public ColumnTask unlinkUser(long taskId, long userId) {
         return taskService.unlinkUser(taskId, userId);
     }
 }

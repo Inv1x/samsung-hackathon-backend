@@ -5,14 +5,16 @@ import com.samsung_hackaton.backend.dao.ColumnRepository;
 import com.samsung_hackaton.backend.dao.TaskRepository;
 import com.samsung_hackaton.backend.entity.Board;
 import com.samsung_hackaton.backend.entity.BoardColumn;
-import com.samsung_hackaton.backend.entity.Task;
+import com.samsung_hackaton.backend.entity.ColumnTask;
 import com.samsung_hackaton.backend.service.ColumnService;
 import lombok.RequiredArgsConstructor;
+import org.h2.util.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +30,13 @@ public class ColumnServiceImpl implements ColumnService {
     @Override
     public List<BoardColumn> getAllColumns() {
         return columnRepository.findAll();
+    }
+
+    @Override
+    public Set<ColumnTask> getAllTasksFromColumn(long columnId){
+        BoardColumn column = getColumn(columnId);
+
+        return column.getColumnTasks();
     }
 
     @Override
@@ -71,11 +80,11 @@ public class ColumnServiceImpl implements ColumnService {
     @Override
     public BoardColumn addTask(long listId, long taskId) {
         BoardColumn column;
-        Task task;
+        ColumnTask columnTask;
 
         try {
             column = columnRepository.findById(listId).get();
-            task = taskRepository.findById(taskId).get();
+            columnTask = taskRepository.findById(taskId).get();
         } catch (NoSuchElementException e) {
             if (columnRepository.findById(listId).isEmpty()) {
                 throw new RuntimeException("Column with ID " + listId + " not found!", e);
@@ -85,7 +94,7 @@ public class ColumnServiceImpl implements ColumnService {
             }
         }
 
-        column.getTasks().add(task);
+        column.getColumnTasks().add(columnTask);
         // привязать задачу к колонке (вызвать createTask)
 
         return columnRepository.saveAndFlush(column);
@@ -94,11 +103,11 @@ public class ColumnServiceImpl implements ColumnService {
     @Override
     public BoardColumn removeTask(long listId, long taskId) {
         BoardColumn column;
-        Task task;
+        ColumnTask columnTask;
 
         try {
             column = columnRepository.findById(listId).get();
-            task = taskRepository.findById(taskId).get();
+            columnTask = taskRepository.findById(taskId).get();
         } catch (NoSuchElementException e) {
             if (columnRepository.findById(listId).isEmpty()) {
                 throw new RuntimeException("Column with ID " + listId + " not found!", e);
@@ -108,7 +117,7 @@ public class ColumnServiceImpl implements ColumnService {
             }
         }
 
-        column.getTasks().remove(task);
+        column.getColumnTasks().remove(columnTask);
 
         return columnRepository.saveAndFlush(column);
     }

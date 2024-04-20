@@ -21,7 +21,7 @@ public class BoardColumn {
 
     @Column(name = "tasks")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Task> tasks;
+    private Set<ColumnTask> columnTasks;
 
     @PrimaryKeyJoinColumn(name = "from_board")
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

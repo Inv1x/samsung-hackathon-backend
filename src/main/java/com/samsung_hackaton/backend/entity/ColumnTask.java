@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "task")
-public class Task {
+public class ColumnTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
