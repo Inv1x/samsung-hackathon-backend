@@ -4,16 +4,12 @@ import com.samsung_hackathon.backend.dao.BoardRepository;
 import com.samsung_hackathon.backend.dao.TaskRepository;
 import com.samsung_hackathon.backend.dao.UserRepository;
 import com.samsung_hackathon.backend.entity.Board;
-import com.samsung_hackathon.backend.entity.Task;
+import com.samsung_hackathon.backend.entity.ColumnTask;
 import com.samsung_hackathon.backend.entity.User;
 import com.samsung_hackathon.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -99,7 +95,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User assignTask(long userId, long taskId) {
         User user;
-        Task task;
+        ColumnTask task;
 
         try {
             user = userRepository.findById(userId).get();

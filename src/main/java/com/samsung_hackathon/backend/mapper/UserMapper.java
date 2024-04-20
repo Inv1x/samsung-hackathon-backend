@@ -14,7 +14,7 @@ public class UserMapper {
                 .username(userProfileDto.getUsername())
                 .email(userProfileDto.getEmail())
                 .boards(userProfileDto.getBoards())
-                .assignedColumnTasks(userProfileDto.getAssignedColumnTasks())
+                .assignedTasks(userProfileDto.getAssignedColumnTasks())
                 .build();
     }
 
@@ -49,7 +49,7 @@ public class UserMapper {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .boards(user.getBoards())
-                .assignedColumnTasks(user.getAssignedColumnTasks())
+                .assignedColumnTasks(user.getAssignedTasks())
                 .build();
     }
 

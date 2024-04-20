@@ -1,11 +1,12 @@
 package com.samsung_hackathon.backend.controller.dto;
 
-import com.samsung_hackaton.backend.entity.Board;
-import com.samsung_hackaton.backend.entity.ColumnTask;
+import com.samsung_hackathon.backend.entity.Board;
+import com.samsung_hackathon.backend.entity.ColumnTask;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.h2.table.Column;
 
 import java.util.Set;
 
