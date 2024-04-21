@@ -1,10 +1,9 @@
 package com.samsung_hackathon.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -20,14 +19,17 @@ public class Board {
     private String title;
 
     @Column(name = "columns")
+    @NonNull
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<BoardColumn> columns;
+    @EqualsAndHashCode.Exclude
+    private Set<BoardColumn> columns = new HashSet<>();;
 
     @PrimaryKeyJoinColumn(name = "owner")
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User owner;
 
     @Column(name = "collaborators")
+    @NonNull
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<User> collaborators;
+    private Set<User> collaborators = new HashSet<>();;
 }

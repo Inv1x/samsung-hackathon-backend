@@ -1,11 +1,13 @@
 package com.samsung_hackathon.backend.service.impl;
 
+import com.samsung_hackathon.backend.controller.dto.BoardDto;
 import com.samsung_hackathon.backend.dao.BoardRepository;
 import com.samsung_hackathon.backend.dao.ColumnRepository;
 import com.samsung_hackathon.backend.dao.UserRepository;
 import com.samsung_hackathon.backend.entity.Board;
 import com.samsung_hackathon.backend.entity.BoardColumn;
 import com.samsung_hackathon.backend.entity.User;
+import com.samsung_hackathon.backend.mapper.BoardMapper;
 import com.samsung_hackathon.backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,17 +29,17 @@ public class BoardServiceImpl implements BoardService {
     private final UserRepository userRepository;
 
     @Override
-    public List<Board> getAllBoards() {
-        return boardRepository.findAll();
+    public List<BoardDto> getAllBoards() {
+        return boardRepository.findAll().stream().map(BoardMapper::toBoardDto).collect(Collectors.toList());
     }
 
     @Override
-    public Board createBoard(Board board) {
-        return boardRepository.saveAndFlush(board);
+    public BoardDto createBoard(Board board) {
+        return BoardMapper.toBoardDto(boardRepository.saveAndFlush(board));
     }
 
     @Override
-    public Board getBoard(long id) {
+    public BoardDto getBoard(long id) {
         Board board;
 
         try {
@@ -45,11 +48,11 @@ public class BoardServiceImpl implements BoardService {
             throw new RuntimeException("Board with ID " + id + " not found!", e);
         }
 
-        return board;
+        return BoardMapper.toBoardDto(board);
     }
 
     @Override
-    public Board updateBoard(long id, Board board) {
+    public BoardDto updateBoard(long id, Board board) {
         Board newBoard;
 
         try {
@@ -60,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
 
         newBoard.setTitle(board.getTitle());
 
-        return boardRepository.saveAndFlush(newBoard);
+        return BoardMapper.toBoardDto(boardRepository.saveAndFlush(newBoard));
     }
 
     @Override
@@ -69,7 +72,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board addColumn(long boardId, long columnId) {;
+    public BoardDto addColumn(long boardId, long columnId) {;
         Board board;
         BoardColumn boardColumn;
 
@@ -86,13 +89,12 @@ public class BoardServiceImpl implements BoardService {
         }
 
         board.getColumns().add(boardColumn);
-        boardColumn.setBoard(board);
 
-        return boardRepository.saveAndFlush(board);
+        return BoardMapper.toBoardDto(boardRepository.saveAndFlush(board));
     }
 
     @Override
-    public Board removeColumn(long boardId, long columnId) {
+    public BoardDto removeColumn(long boardId, long columnId) {
         Board board;
         BoardColumn boardColumn;
 
@@ -111,11 +113,11 @@ public class BoardServiceImpl implements BoardService {
         board.getColumns().remove(boardColumn);
         boardColumn.setBoard(null);
 
-        return boardRepository.saveAndFlush(board);
+        return BoardMapper.toBoardDto(boardRepository.saveAndFlush(board));
     }
 
     @Override
-    public Board addCollaborator(long boardId, long collaboratorId) {
+    public BoardDto addCollaborator(long boardId, long collaboratorId) {
         Board board;
         User user;
 
@@ -134,11 +136,11 @@ public class BoardServiceImpl implements BoardService {
         board.getCollaborators().add(user);
         user.getBoards().add(board); // тут так или вызвать linkBoard???
 
-        return boardRepository.saveAndFlush(board);
+        return BoardMapper.toBoardDto(boardRepository.saveAndFlush(board));
     }
 
     @Override
-    public Board removeCollaborator(long boardId, long collaboratorId) {
+    public BoardDto removeCollaborator(long boardId, long collaboratorId) {
         Board board;
         User user;
 
@@ -157,6 +159,6 @@ public class BoardServiceImpl implements BoardService {
         board.getCollaborators().remove(user);
         user.getBoards().remove(board);
 
-        return boardRepository.saveAndFlush(board);
+        return BoardMapper.toBoardDto(boardRepository.saveAndFlush(board));
     }
 }

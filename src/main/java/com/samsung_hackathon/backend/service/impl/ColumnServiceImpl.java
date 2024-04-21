@@ -1,11 +1,13 @@
 package com.samsung_hackathon.backend.service.impl;
 
+import com.samsung_hackathon.backend.controller.dto.AttachedColumnDto;
 import com.samsung_hackathon.backend.dao.BoardRepository;
 import com.samsung_hackathon.backend.dao.ColumnRepository;
 import com.samsung_hackathon.backend.dao.TaskRepository;
 import com.samsung_hackathon.backend.entity.Board;
 import com.samsung_hackathon.backend.entity.BoardColumn;
 import com.samsung_hackathon.backend.entity.ColumnTask;
+import com.samsung_hackathon.backend.mapper.BoardColumnMapper;
 import com.samsung_hackathon.backend.service.ColumnService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,12 @@ public class ColumnServiceImpl implements ColumnService {
     }
 
     @Override
+    public AttachedColumnDto getAttachedColumnDto(long id) {
+        BoardColumn column = getColumn(id);
+        return BoardColumnMapper.toAttachedColumnDto(column);
+    }
+
+    @Override
     public BoardColumn updateColumn(long id, BoardColumn boardColumn) {
         BoardColumn column;
 
@@ -77,7 +85,7 @@ public class ColumnServiceImpl implements ColumnService {
     }
 
     @Override
-    public BoardColumn addTask(long listId, long taskId) {
+    public AttachedColumnDto addTask(long listId, long taskId) {
         BoardColumn column;
         ColumnTask columnTask;
 
@@ -96,7 +104,7 @@ public class ColumnServiceImpl implements ColumnService {
         column.getColumnTasks().add(columnTask);
         // привязать задачу к колонке (вызвать createTask)
 
-        return columnRepository.saveAndFlush(column);
+        return BoardColumnMapper.toAttachedColumnDto(columnRepository.saveAndFlush(column));
     }
 
     @Override

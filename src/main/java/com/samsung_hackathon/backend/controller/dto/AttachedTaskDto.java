@@ -1,5 +1,6 @@
 package com.samsung_hackathon.backend.controller.dto;
 
+import com.samsung_hackathon.backend.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegisterDto {
+public class AttachedTaskDto {
     private long id;
-    private String username;
-    private String email;
-    private String password;
+    private String description;
+    private UserShortDto assignedTo;
+    private boolean isDone;
 }

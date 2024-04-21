@@ -1,5 +1,6 @@
 package com.samsung_hackathon.backend.controller;
 
+import com.samsung_hackathon.backend.controller.dto.AttachedColumnDto;
 import com.samsung_hackathon.backend.entity.BoardColumn;
 import com.samsung_hackathon.backend.service.ColumnService;
 import lombok.RequiredArgsConstructor;
@@ -13,19 +14,14 @@ import java.util.List;
 public class ColumnController {
     private final ColumnService columnService;
 
-    @GetMapping
-    public List<BoardColumn> getAllColumns() {
-        return columnService.getAllColumns();
-    }
-
-    @PostMapping("by-id/{id}")
+    @PostMapping()
     public BoardColumn createColumn(@RequestBody BoardColumn boardColumn) {
         return columnService.createColumn(boardColumn);
     }
 
     @GetMapping("by-id/{id}")
-    public BoardColumn getColumn(@PathVariable long id) {
-        return columnService.getColumn(id);
+    public AttachedColumnDto getColumn(@PathVariable long id) {
+        return columnService.getAttachedColumnDto(id);
     }
 
     @PutMapping("by-id/{id}")
@@ -39,7 +35,7 @@ public class ColumnController {
     }
 
     @PutMapping("{listId}/add-task/{taskId}")
-    public BoardColumn addTask(@PathVariable long listId, @PathVariable long taskId) {
+    public AttachedColumnDto addTask(@PathVariable long listId, @PathVariable long taskId) {
         return columnService.addTask(listId, taskId);
     }
 

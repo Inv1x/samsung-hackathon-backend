@@ -1,5 +1,6 @@
 package com.samsung_hackathon.backend.service;
 
+import com.samsung_hackathon.backend.controller.dto.AttachedColumnDto;
 import com.samsung_hackathon.backend.entity.BoardColumn;
 import com.samsung_hackathon.backend.entity.ColumnTask;
 
@@ -16,11 +17,13 @@ public interface ColumnService {
 
     BoardColumn getColumn(long id);
 
+    public AttachedColumnDto getAttachedColumnDto(long id);
+
     BoardColumn updateColumn(long id, BoardColumn boardColumn);
 
     void deleteColumn(long id);
 
-    BoardColumn addTask(long listId, long taskId);
+    AttachedColumnDto addTask(long listId, long taskId);
 
     BoardColumn removeTask(long listId, long taskId);
 

@@ -1,11 +1,9 @@
-package com.samsung_hackaton.backend.controller;
+package com.samsung_hackathon.backend.controller;
 
 import com.samsung_hackathon.backend.entity.ColumnTask;
 import com.samsung_hackathon.backend.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController("task")
@@ -15,7 +13,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ColumnTask createTask(ColumnTask columnTask) {
+    public ColumnTask createTask(@RequestBody ColumnTask columnTask) {
         return taskService.createTask(columnTask);
     }
 
