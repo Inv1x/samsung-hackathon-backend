@@ -16,14 +16,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserProfileDto {
     private long id;
-
     private String name;
-
     private String username;
-
     private String email;
-
     private Set<Board> boards;
-
     private Set<ColumnTask> assignedColumnTasks;
 }

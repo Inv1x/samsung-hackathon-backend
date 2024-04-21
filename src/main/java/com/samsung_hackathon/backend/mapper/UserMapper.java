@@ -2,6 +2,7 @@ package com.samsung_hackathon.backend.mapper;
 
 import com.samsung_hackathon.backend.controller.dto.UserProfileDto;
 import com.samsung_hackathon.backend.controller.dto.UserRegisterDto;
+import com.samsung_hackathon.backend.controller.dto.UserShortDto;
 import com.samsung_hackathon.backend.entity.User;
 import lombok.experimental.UtilityClass;
 
@@ -53,4 +54,12 @@ public class UserMapper {
                 .build();
     }
 
+    public UserShortDto toUserShortDto(User user) {
+        return UserShortDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
+    }
 }

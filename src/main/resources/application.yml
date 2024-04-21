@@ -5,13 +5,13 @@ spring:
       console:
         enabled: true
 
-    jpa:
-      generate-ddl: true
+  jpa:
+    generate-ddl: true
 
-      hibernate:
-        ddl-auto: update
-        # create-drop for reset
+    hibernate:
+      ddl-auto: update
+      # create-drop for reset
 
-      show-sql: false
+    show-sql: false
 
-      defer-datasource-initialization: true
+    defer-datasource-initialization: true
